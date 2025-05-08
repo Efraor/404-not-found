@@ -2,24 +2,52 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>MOODify</title>
+    <title>MOODify 🎵</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-6">
-    <h1 class="text-3xl text-center text-purple-700 font-bold mb-6">MOODify 🎵</h1>
-    
-    <form action="/generar_playlist" method="POST" class="max-w-md mx-auto bg-white p-6 rounded shadow">
-        <label class="block mb-2 text-blue-500 font-bold">¿Cómo te sientes hoy?</label>
-        <input name="estado_animo" required placeholder="Feliz, triste, enérgico..." class="w-full p-2 border rounded mb-4">
+<body class="bg-gray-100 min-h-screen p-6">
+    <div class="max-w-xl mx-auto">
+        <h1 class="text-4xl text-center text-purple-700 font-extrabold mb-6">MOODify 🎵</h1>
 
-        <label class="block mb-2 text-blue-500 font-bold">Elige plataforma</label>
-        <div class="flex justify-between mb-4">
-            <label><input type="radio" name="plataforma" value="Spotify" required> Spotify</label>
-            <label><input type="radio" name="plataforma" value="Apple"> Apple Music</label>
-            <label><input type="radio" name="plataforma" value="Deezer"> Deezer</label>
-        </div>
+        <!-- Formulario principal -->
+        <form action="/generar_playlist" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6">
+            <div class="mb-4">
+                <label class="block text-blue-500 font-bold mb-2">¿Cómo te sientes hoy?</label>
+                <input name="estado_animo" required placeholder="Ej. alegre, melancólico, con energía..."
+                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
 
-        <button class="bg-purple-700 text-white px-4 py-2 rounded w-full hover:bg-purple-500">Aceptar</button>
-    </form>
+            <div class="mb-4">
+                <label class="block text-blue-500 font-bold mb-2">Elige plataforma</label>
+                <div class="flex space-x-4">
+                    <label><input type="radio" name="plataforma" value="Spotify" required> Spotify</label>
+                    <label><input type="radio" name="plataforma" value="Apple"> Apple Music</label>
+                    <label><input type="radio" name="plataforma" value="Deezer"> Deezer</label>
+                </div>
+            </div>
+
+            <div>
+                <button class="bg-purple-700 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded w-full" type="submit">
+                    Generar Playlist
+                </button>
+            </div>
+        </form>
+
+        <!-- Mostrar playlist generada -->
+        {% if canciones %}
+            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-4"><span class="text-purple-600">"{{ estado_animo }}"</span> en <strong>{{ plataforma }}</strong></h2>
+                <ul class="list-disc list-inside space-y-2 text-blue-600">
+                    {% for c in canciones %}
+                        <p>
+                            <a href="{{ c.url }}" target="_blank" class="hover:underline">
+                                {{ c.titulo }}
+                            </a>
+                        </p>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
